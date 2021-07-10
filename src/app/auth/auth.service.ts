@@ -101,6 +101,7 @@ export class AuthService{
         }
     }
 
+    //logout code
     logout(){
         //this makes the application treat the user as unauthenticated
         this.user.next(null);
