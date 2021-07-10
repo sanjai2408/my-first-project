@@ -1,15 +1,19 @@
-import { Store } from '@ngrx/store';
+//import { Store } from '@ngrx/store';
 import { map, take } from 'rxjs/operators';
 import { AuthService } from './auth.service';
 import { Injectable } from "@angular/core";
 import { ActivatedRouteSnapshot, CanActivate, Router, RouterStateSnapshot, UrlTree } from "@angular/router";
 import { Observable } from "rxjs";
-import * as fromApp from '../store/app.reducer';
+//import * as fromApp from '../store/app.reducer';
 
 //making a guard to stop unauthenticated users form accessing recipes tab
 @Injectable({providedIn: 'root'})
 export class AuthGuard implements CanActivate{
-    constructor(private authService: AuthService, private router: Router, private store: Store<fromApp.AppState>){}
+    constructor(
+        private authService: AuthService, 
+        private router: Router, 
+        //private store: Store<fromApp.AppState>
+    ){}
 
     canActivate(route: ActivatedRouteSnapshot, router: RouterStateSnapshot): 
         | boolean 
@@ -17,11 +21,11 @@ export class AuthGuard implements CanActivate{
         | Promise<boolean | UrlTree> 
         | Observable<boolean | UrlTree> {
         //see if user is authenticated by looking at the user behavior subject
-        return this.store.select('auth').pipe(
+        return this.authService.user.pipe(
             take(1),
-            map(authState => {
-                return authState.user;
-            }), 
+            // map(authState => {
+            //     return authState.user;
+            // }), 
             map(user => {
                 const isAuth = !!user;
                 if(isAuth){

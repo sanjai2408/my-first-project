@@ -1,11 +1,11 @@
-import * as ShoppingListActions  from './../shopping-list/store/shopping-list.actions';
-//import { ShoppingListService } from './../shopping-list/shopping-list.service';
+//import * as ShoppingListActions  from './../shopping-list/store/shopping-list.actions';
+import { ShoppingListService } from './../shopping-list/shopping-list.service';
 import { Ingredient } from 'src/app/shared/ingredient.model';
 import { Injectable } from '@angular/core';
 import { Recipe } from './recipe.model';
 import { Subject } from 'rxjs';
-import { Store } from '@ngrx/store';
-import * as fromApp from '../store/app.reducer';
+//import { Store } from '@ngrx/store';
+//import * as fromApp from '../store/app.reducer';
 
 
 @Injectable()
@@ -36,8 +36,8 @@ export class RecipeService {
     private recipes: Recipe[] = [];
 
     constructor(
-        //private slService: ShoppingListService, 
-        private store: Store<fromApp.AppState>
+        private slService: ShoppingListService, 
+        //private store: Store<fromApp.AppState>
     ){}
 
     //calling method to overwrite recipes array
@@ -56,8 +56,8 @@ export class RecipeService {
     }
 
     addIngredientToSl(ingredients: Ingredient[]){
-        //this.slService.addIngredients(ingredients);
-        this.store.dispatch(new ShoppingListActions.AddIngredients(ingredients));
+        this.slService.addIngredients(ingredients);
+        //this.store.dispatch(new ShoppingListActions.AddIngredients(ingredients));
     }
 
     //adding a new recipe to the recipe array

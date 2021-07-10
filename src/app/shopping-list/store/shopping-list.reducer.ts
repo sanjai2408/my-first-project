@@ -1,4 +1,4 @@
-import * as ShoppingListActions from './shopping-list.actions';
+/* import * as ShoppingListActions from './shopping-list.actions';
 import { Ingredient } from "../../shared/ingredient.model";
 
 //state for this reducer
@@ -76,4 +76,4 @@ export function shoppingListReducer(state: State = initialState, action: Shoppin
         default: 
             return state;
     }
-}
+} */

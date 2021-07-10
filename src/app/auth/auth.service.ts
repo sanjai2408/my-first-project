@@ -1,4 +1,4 @@
-import { Store } from '@ngrx/store';
+//import { Store } from '@ngrx/store';
 import { User } from './user.model';
 import { HttpClient, HttpErrorResponse } from "@angular/common/http";
 import { Injectable } from "@angular/core";
@@ -6,8 +6,8 @@ import { BehaviorSubject, pipe, throwError } from "rxjs";
 import { catchError, tap } from "rxjs/operators";
 import { Router } from '@angular/router';
 import { environment } from '../../environments/environment'
-import * as fromApp from '../store/app.reducer';
-import * as AuthActions from './store/auth.actions';
+//import * as fromApp from '../store/app.reducer';
+//import * as AuthActions from './store/auth.actions';
 
 //this interface varies depending on the rest api used, this is for firebase
 export interface AuthResponseData{
@@ -24,11 +24,15 @@ export interface AuthResponseData{
 @Injectable({providedIn: 'root'})
 export class AuthService{
     //BehaviorSubject same as Subject but it also gives subscribers immediate access to previously emitted value even if they haven't subscribed when the value was emitted
-    //user = new BehaviorSubject<User>(null);
+    user = new BehaviorSubject<User>(null);
 
     private tokenTimer: any;
 
-    constructor(private http: HttpClient, private router: Router, private store: Store<fromApp.AppState>){}
+    constructor(
+        private http: HttpClient, 
+        private router: Router, 
+        //private store: Store<fromApp.AppState>
+        ){}
 
     //values and arguments, as well as post request is on the firebase docs
     signup(email: string, password: string){
@@ -83,14 +87,14 @@ export class AuthService{
 
         //check if user has valid token
         if(loadedUser.token){
-            //this.user.next(loadedUser);
+            this.user.next(loadedUser);
             //dispatching actions in the autologin
-            this.store.dispatch(new AuthActions.Login({
-                email: loadedUser.email, 
-                userId: loadedUser.id, 
-                token: loadedUser.token,
-                expirationDate: new Date(userData._tokenExpirationDate)
-            }));
+            // this.store.dispatch(new AuthActions.Login({
+            //     email: loadedUser.email, 
+            //     userId: loadedUser.id, 
+            //     token: loadedUser.token,
+            //     expirationDate: new Date(userData._tokenExpirationDate)
+            // }));
             //auto logout if theres a timeout (current date - future date)
             const expirationDuration = new Date(userData._tokenExpirationDate).getTime() - new Date().getTime();
             this.autoLogout(expirationDuration);
@@ -99,9 +103,9 @@ export class AuthService{
 
     logout(){
         //this makes the application treat the user as unauthenticated
-        //this.user.next(null);
+        this.user.next(null);
         //dispatching log out action
-        this.store.dispatch(new AuthActions.Logout());
+        //this.store.dispatch(new AuthActions.Logout());
         //redirect to authentication page
         this.router.navigate(['/auth']);
         //removing user data key and data stored
@@ -124,14 +128,15 @@ export class AuthService{
     private handleAuthentication(email: string, userId: string, token: string, expiresIn: number){
         const expirationDate = new Date(new Date().getTime() + expiresIn * 1000);
         const user = new User(email, userId, token, expirationDate);
-        //this.user.next(user);//emitting a new user
+        this.user.next(user);//emitting a new user
+
         //dispatching new login action
-        this.store.dispatch(new AuthActions.Login({
-            email: email,
-            userId: userId,
-            token: token,
-            expirationDate: expirationDate
-        }));
+        // this.store.dispatch(new AuthActions.Login({
+        //     email: email,
+        //     userId: userId,
+        //     token: token,
+        //     expirationDate: expirationDate
+        // }));
         this.autoLogout(expiresIn * 1000); //time in ms
         //allows you to write an item to local storage and store data there
         localStorage.setItem('userData', JSON.stringify(user));

@@ -1,4 +1,4 @@
-import { User } from './../user.model';
+/* import { User } from './../user.model';
 import * as AuthActions  from './auth.actions';
 
 //the reducer state
@@ -53,4 +53,4 @@ export function authReducer(state = initialState, action: AuthActions.AuthAction
         default:
             return state;
     }
-}
+} */

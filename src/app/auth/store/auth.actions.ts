@@ -1,4 +1,4 @@
-import { Action } from "@ngrx/store";
+/* import { Action } from "@ngrx/store";
 
 //identifiers for actions
 export const LOGIN_START = '[Auth] Login Start';
@@ -38,4 +38,4 @@ export class LoginFail implements Action{
     constructor(public payload: string){}
 }
 
-export type AuthActions = Login | Logout | LoginStart | LoginFail;
+export type AuthActions = Login | Logout | LoginStart | LoginFail; */

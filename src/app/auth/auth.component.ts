@@ -5,9 +5,9 @@ import { Observable, Subscription } from 'rxjs';
 import { Router } from '@angular/router';
 import { AlertComponent } from '../shared/alert/alert.component';
 import { PlaceHolderDirective } from '../shared/placeholder/placeholder.directive';
-import { Store } from '@ngrx/store';
-import * as fromApp from '../store/app.reducer';
-import * as AuthActions from './store/auth.actions';
+//import { Store } from '@ngrx/store';
+//import * as fromApp from '../store/app.reducer';
+//import * as AuthActions from './store/auth.actions';
 
 @Component({
     selector: 'app-auth',
@@ -21,20 +21,21 @@ export class AuthComponent implements OnInit, OnDestroy{
     @ViewChild(PlaceHolderDirective, {static: false}) alertHost: PlaceHolderDirective;
     private closeSub: Subscription;
     
-    constructor(private authService: AuthService, 
-                private router: Router,
-                private compFactResolver: ComponentFactoryResolver,
-                private store: Store<fromApp.AppState>
+    constructor(
+        private authService: AuthService, 
+        private router: Router,
+        private compFactResolver: ComponentFactoryResolver,
+        //private store: Store<fromApp.AppState>
     ){}
 
     ngOnInit(){
-        this.store.select('auth').subscribe(authState => {
-            this.isLoading = authState.loading;
-            this.error = authState.authError;
-            if(this.error){
-                this.showErrorAlert(this.error);
-            }
-        });
+        // this.store.select('auth').subscribe(authState => {
+        //     this.isLoading = authState.loading;
+        //     this.error = authState.authError;
+        //     if(this.error){
+        //         this.showErrorAlert(this.error);
+        //     }
+        // });
     }
 
     onSwitchMode(){
@@ -55,12 +56,12 @@ export class AuthComponent implements OnInit, OnDestroy{
         
         //check if it is in login mode
         if(this.isLoginMode){
-            //authObs = this.authService.login(email, password)
+            authObs = this.authService.login(email, password)
             
             //using ngrx effects and ngrx store instead
-            this.store.dispatch(
-                new AuthActions.LoginStart({email: email, password: password})
-            );
+            // this.store.dispatch(
+            //     new AuthActions.LoginStart({email: email, password: password})
+            // );
         } else {
             //sending the retreived email and pass to the service
             authObs = this.authService.signup(email, password)
@@ -69,19 +70,19 @@ export class AuthComponent implements OnInit, OnDestroy{
 
         //replacing this and putting it in ngOnInit
         //redirection done in auth effects
-        // authObs.subscribe(
-        //     respData => { //if authentication succeeds
-        //         console.log(respData);
-        //         this.isLoading = false;
-        //         this.router.navigate(['/recipes']); //navigates to recipe page when logged in
-        //     },
-        //     errorMessage => {
-        //         console.log(errorMessage);
-        //         this.error = errorMessage;
-        //         this.showErrorAlert(errorMessage);
-        //         this.isLoading = false;
-        //     }
-        // );
+        authObs.subscribe(
+            respData => { //if authentication succeeds
+                console.log(respData);
+                this.isLoading = false;
+                this.router.navigate(['/recipes']); //navigates to recipe page when logged in
+            },
+            errorMessage => {
+                console.log(errorMessage);
+                this.error = errorMessage;
+                this.showErrorAlert(errorMessage);
+                this.isLoading = false;
+            }
+        );
 
         form.reset();
     }

@@ -1,4 +1,4 @@
-import { Ingredient } from './../../shared/ingredient.model';
+/* import { Ingredient } from './../../shared/ingredient.model';
 import { Action } from "@ngrx/store";
 
 //this is the action
@@ -53,4 +53,4 @@ export type ShoppingListActions =
 | UpdateIngredient 
 | DeleteIngredient
 | StartEdit
-| StopEdit;
+| StopEdit; */

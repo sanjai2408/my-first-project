@@ -1,4 +1,4 @@
-/* import { Subject } from 'rxjs';
+import { Subject } from 'rxjs';
 import { Ingredient } from 'src/app/shared/ingredient.model';
 
 export class ShoppingListService {
@@ -37,4 +37,4 @@ export class ShoppingListService {
         this.ingredients.splice(index, 1); //splice starts at an index point and removes 1 element
         this.ingredientsChanged.next(this.ingredients.slice());
     }
-} */
+}
